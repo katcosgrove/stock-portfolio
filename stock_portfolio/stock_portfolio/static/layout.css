@@ -1,0 +1,18 @@
+header {
+  background-color: rgba(0,0,0,.6);
+  color: black;
+  list-style: none;
+  height: 15vh;
+  font-family: 'Roboto';
+  font-style: italic;
+  text-align: center;
+}
+
+button {
+  color: black;
+  font-family: 'Roboto';
+  font-size: 1vw;
+  border-radius: 2px;
+  width: 7vw;
+  height: 4.2vh;
+}
