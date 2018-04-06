@@ -1,37 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8 ">
-  <title>Stock Portfolio</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="static/base.css">
-  <link rel="stylesheet" href="static/layout.css">
-  <link rel="stylesheet" href="static/modules.css">
-  <link rel="stylesheet" href="static/normalize.css">
-</head>
-<body>
-  <header>
-    <nav role="navigation">
-      <div id="menuToggle">
-        <input type="checkbox" />
-        <span></span>
-        <span></span>
-        <span></span>
-        <ul id="menu">
-          <li><a href="/">Home</a></li>
-          <li><a href="/auth">Login</a></li>
-          <li><a href="/register">Register</a></li>
-        </ul>
-      </div>
-      <h1>Stock Portfolio</h1>
-    </nav>
-  </header>
-  <main>
-    <h3>A stock portfolio app for Code 401 Python</h3>
+{% extends "base.jinja2" %}
+{% block content %}
     <form class="addStock">
       <input class="stock" type="text" placeholder="Stock Ticker" required>
       <button type="submit">Add to Portfolio</button>
     </form>
-  </main>
-</body>
-</html>
+{% endblock content %}

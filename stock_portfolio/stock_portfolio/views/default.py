@@ -1,24 +1,36 @@
 from pyramid.response import Response
 from pyramid.view import view_config
-
-from sqlalchemy.exc import DBAPIError
-
-from ..models import MyModel
+from ..sample_data import MOCK_DATA
+from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 
 
-@view_config(route_name='home', renderer='../templates/index.jinja2')
+@view_config(route_name='home', renderer='../templates/base.jinja2')
 def home_view(request):
-    return{}
+    return {}
+    return 'you did the thing'
 
 
-@view_config(route_name='auth', renderer='../templates/login.jinja2')
+@view_config(route_name='auth', renderer='../templates/auth.jinja2')
 def get_auth_view(request):
-    return {}
+    if request.method == 'GET':
+        try:
+            username = request.GET['username']
+            password = request.GET['password']
+            print('User: {}, Pass: {}'.format(username, password))
 
+            return HTTPFound(location=request.route_url('portfolio'))
 
-@view_config(route_name='register', renderer='../templates/register.jinja2')
-def get_register_view(request):
-    return {}
+        except KeyError:
+            return {}
+
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        print('User: {}, Pass: {}'.format(username, password))
+
+        return HTTPFound(location=request.route_url('portfolio'))
+
+    return HTTPNotFound()
 
 
 @view_config(route_name='stock', renderer='../templates/stock-add.jinja2')
@@ -28,27 +40,12 @@ def get_stock_view(request):
 
 @view_config(route_name='portfolio', renderer='../templates/portfolio.jinja2')
 def get_portfolio_view(request):
-    return{}
+    return{'stocks': MOCK_DATA}
 
 
-@view_config(route_name='portfolio/{symbol}', renderer='../templates/stock-detail.jinja2')
+@view_config(route_name='portfolio/detail', renderer='../templates/stock-detail.jinja2')
 def get_detail_view(request):
-    symbol = 'test'
-    return{}
-
-
-db_err_msg = """\
-Pyramid is having a problem using your SQL database.  The problem
-might be caused by one of the following things:
-
-1.  You may need to run the "initialize_stock_portfolio_db" script
-    to initialize your database tables.  Check your virtual
-    environment's "bin" directory for this script and try to run it.
-
-2.  Your database server may not be running.  Check that the
-    database server referred to by the "sqlalchemy.url" setting in
-    your "development.ini" file is running.
-
-After you fix the problem, please restart the Pyramid application to
-try it again.
-"""
+    symbol = request.matchdict['symbol']
+    print(symbol)
+    return {'stocks': MOCK_DATA,
+            'symbol': symbol}

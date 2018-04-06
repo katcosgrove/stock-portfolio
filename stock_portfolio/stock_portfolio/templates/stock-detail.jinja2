@@ -1,47 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8 ">
-  <title>Stock Portfolio</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="static/base.css">
-  <link rel="stylesheet" href="static/layout.css">
-  <link rel="stylesheet" href="static/modules.css">
-  <link rel="stylesheet" href="static/normalize.css">
-</head>
-<body>
-  <header>
-    <nav role="navigation">
-      <div id="menuToggle">
-        <input type="checkbox" />
-        <span></span>
-        <span></span>
-        <span></span>
-        <ul id="menu">
-          <li><a href="/">Home</a></li>
-          <li><a href="/auth">Login</a></li>
-          <li><a href="/register">Register</a></li>
-        </ul>
-      </div>
-      <h1>Stock Portfolio</h1>
-    </nav>
-  </header>
-  <main>
-    <h3>A stock portfolio app for Code 401 Python</h3>
-    <table class="portfolioTable">
-  <tr>
-    <th>Stock</th>
-    <th>Price/share</th>
-    <th>Change</th>
-    <th>Opening Price</th>
-    <th>Closing Price</th>
-    <th>Volume</th>
-  </tr>
-  <tr>
-  </tr>
-  <tr>
-  </tr>
-</table>
-  </main>
-</body>
-</html>
+{% extends "base.jinja2" %}
+{% block content %}
+ <div>
+  {% for stock in stocks %}
+    {% if stock.symbol == symbol %}
+      <h3>{{stock.companyName}}</h3>
+          <p>Symbol: {{stock.symbol}}</p>
+          <p>Exchange: {{stock.exchange}}</p>
+          <p>Industry: {{stock.indsutry}}</p>
+          <p>Website: {{stock.website}}</p>
+          <p>Description: {{stock.description}}</p>
+          <p>CEO: {{stock.CEO}}</p>
+          <p>Issue Type: {{stock.issueType}}</p>
+          <p>Sector: {{stock.sector}}</p>
+    {% endif %}
+  {% endfor %}
+  </div>
+{% endblock content %}
