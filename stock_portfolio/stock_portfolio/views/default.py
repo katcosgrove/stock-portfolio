@@ -6,8 +6,7 @@ from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 
 @view_config(route_name='home', renderer='../templates/base.jinja2')
 def home_view(request):
-    return {}
-    return 'you did the thing'
+    return{}
 
 
 @view_config(route_name='auth', renderer='../templates/auth.jinja2')
