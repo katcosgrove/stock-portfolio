@@ -1,7 +1,25 @@
 {% extends "base.jinja2" %}
 {% block content %}
-    <form class="addStock">
-      <input class="stock" type="text" placeholder="Stock Ticker" required>
-      <button type="submit">Add to Portfolio</button>
+    <form class="searchStock" action="{{request.route_url('stock')}}" method="GET">
+      <input class="stock" type="text" name="symbol" placeholder="Stock Ticker">
+      <button type="submit">Search</button>
     </form>
+<form class="addStock" action="{{request.route_url('stock')}}" method="POST">
+    {% if company %}
+    <div>
+        <p>Company: {{company.companyName}}</p>
+        <p>Symbol: {{company.symbol}}</p>
+        <p>Exchange: {{company.exchange}}</p>
+        <p>Industry: {{company.indsutry}}</p>
+        <p>Website: {{company.website}}</p>
+        <p>Description: {{company.description}}</p>
+        <p>CEO: {{company.CEO}}</p>
+        <p>Issue Type: {{company.issueType}}</p>
+        <p>Sector: {{company.sector}}</p>
+    </div>
+    <button name="symbol" value="{{company.symbol}}" type="submit">Add to Portfolio</button>
+</form>
+    {% endif %}
 {% endblock content %}
+
+{# For adding to portfolio, use mock_data.append #}
