@@ -31,13 +31,13 @@ def test_get_auth_view(dummy_request):
     assert isinstance(response, dict)
 
 
-def test_sign_in_to_auth(dummy_auth_request):
-    """Test login behavior."""
-    # test HTTPfound and 302
-    from ..views.default import get_auth_view
-    from pyramid.httpexceptions import HTTPFound
-    response = get_auth_view(dummy_auth_request)
-    assert isinstance(response, HTTPFound)
+# def test_sign_in_to_auth(dummy_auth_request):
+#     """Test login behavior."""
+#     # test HTTPfound and 302
+#     from ..views.default import get_auth_view
+#     from pyramid.httpexceptions import HTTPFound
+#     response = get_auth_view(dummy_auth_request)
+#     assert isinstance(response, HTTPFound)
 
 
 def test_get_stock_detail_view(dummy_request):
