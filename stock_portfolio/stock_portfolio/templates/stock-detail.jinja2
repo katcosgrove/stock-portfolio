@@ -1,8 +1,6 @@
 {% extends "base.jinja2" %}
 {% block content %}
  <div>
-  {% for stock in stocks %}
-    {% if stock.symbol == symbol %}
       <h3>{{stock.companyName}}</h3>
           <p>Symbol: {{stock.symbol}}</p>
           <p>Exchange: {{stock.exchange}}</p>
@@ -12,7 +10,5 @@
           <p>CEO: {{stock.CEO}}</p>
           <p>Issue Type: {{stock.issueType}}</p>
           <p>Sector: {{stock.sector}}</p>
-    {% endif %}
-  {% endfor %}
   </div>
 {% endblock content %}
