@@ -20,6 +20,7 @@
     <button name="symbol" value="{{company.symbol}}" type="submit">Add to Portfolio</button>
 </form>
     {% endif %}
+    {% if message %}
+    <p>{{message}}</p>
+    {% endif %}
 {% endblock content %}
-
-{# For adding to portfolio, use mock_data.append #}
