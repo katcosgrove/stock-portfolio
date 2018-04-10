@@ -2,13 +2,16 @@
 {% block content %}
     <h2>Register</h2>
     <form id="registration-form" method="POST" action="{{request.route_url('auth')}}">
+      <input type="hidden" name="csrf_token" value="{{request.session.get_csrf_token()}}">
       <input class="username" name="username" type="text" placeholder="Username" required>
       <input class="password" name="password" type="text" placeholder="Password" required>
       <input class="confirmPassword" type="text" placeholder="Confirm Password" required>
+      <input class="email" name="email" type="text" placeholder="Email" required>
       <button type="submit">Register</button>
     </form>
     <h2>Login</h2>
     <form id="login-form" method="GET" action="{{request.route_url('auth')}}">
+      <input type="hidden" name="csrf_token" value="{{request.session.get_csrf_token()}}">
       <input class="username" name="username" type="text" placeholder="Username" required>
       <input class="password" name="password" type="text" placeholder="Password" required>
       <button type="submit">Login</button>
