@@ -19,9 +19,14 @@
       <span></span>
       <ul id="menu">
         <li><a href="{{request.route_url('home')}}">Home</a></li>
-        <li><a href="{{request.route_url('auth')}}">Login</a></li>
-        <li><a href="{{request.route_url('portfolio')}}">Portfolio</a></li>
-        <li><a href="{{request.route_url('stock')}}">Stock Search</a></li>
+          {% if request.authenticated_userid %}
+          <li><a href="{{request.route_url('portfolio')}}">Portfolio</a></li>
+          <li><a href="{{request.route_url('stock')}}">Search</a></li>
+          <li><a href="{{request.route_url('logout')}}">Logout</a></li>
+          {% else %}
+          <li><a href="{{request.route_url('auth')}}">Login</a></li>
+          <li><a href="{{request.route_url('auth')}}">Register</a></li>
+          {% endif %}
       </ul>
     </div>
     <h1>Stock Portfolio</h1>

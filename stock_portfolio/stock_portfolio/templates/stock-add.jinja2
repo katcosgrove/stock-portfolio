@@ -5,6 +5,7 @@
       <button type="submit">Search</button>
     </form>
 <form class="addStock" action="{{request.route_url('stock')}}" method="POST">
+    <input type="hidden" name="csrf_token" value="{{request.session.get_csrf_token()}}">
     {% if company %}
     <div>
         <p>Company: {{company.companyName}}</p>

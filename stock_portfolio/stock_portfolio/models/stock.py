@@ -1,4 +1,5 @@
 from sqlalchemy import (
+    Index,
     Column,
     Integer,
     String,
@@ -20,3 +21,6 @@ class Stock(Base):
     industry = Column(String)
     sector = Column(String)
     issueType = Column(String)
+
+
+Index('entry_index', Stock.id, unique=True, mysql_length=255)

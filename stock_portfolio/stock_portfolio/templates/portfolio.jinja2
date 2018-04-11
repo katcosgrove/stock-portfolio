@@ -3,7 +3,7 @@
 {% for stock in stocks %}
   <div>
     <h3>{{stock.companyName}}</h3>
-    <p><a href="{{request.route_url('portfolio/detail', symbol=stock.symbol)}}">More Details</a></p>
+    <p><a href="{{request.route_url('detail', symbol=stock.symbol)}}">More Details</a></p>
   </div>
   {% endfor %}
 {% endblock content %}

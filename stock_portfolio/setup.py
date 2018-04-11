@@ -9,6 +9,7 @@ with open(os.path.join(here, 'CHANGES.txt')) as f:
     CHANGES = f.read()
 
 requires = [
+    'cryptacular',
     'plaster_pastedeploy',
     'psycopg2',
     'pyramid >= 1.9a',
