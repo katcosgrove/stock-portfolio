@@ -12,7 +12,7 @@ def test_constructed_account_added_to_database(db_session):
     assert len(db_session.query(Account).all()) == 1
 
 
-def test_account_with_no_password_throws_error(db_session):
+def test_account_with_no_email_throws_error(db_session):
     """Test adding stock with required field empty."""
     from ..models import Account
     import pytest

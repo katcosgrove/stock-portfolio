@@ -16,7 +16,7 @@ def get_stock_view(request):
         try:
             symbol = request.GET['symbol']
         except KeyError:
-            return HTTPNotFound()
+            return {}
         try:
             response = requests.get(API_URL + '/stock/{}/company'.format(symbol))
             data = response.json()
@@ -25,25 +25,20 @@ def get_stock_view(request):
             raise HTTPNotFound()
 
     if request.method == 'POST':
-        if not all([field in request.POST for field in ['symbol', 'companyName', 'exchange', 'industry', 'website', 'description','CEO', 'issueType', 'sector']]):
-            raise HTTPBadRequest
 
-        instance = Stock(
-            symbol=request.POST['symbol'],
-            companyName=request.POST['companyName'],
-            exchange=request.POST['exchange'],
-            industry=request.POST['industry'],
-            website=request.POST['website'],
-            description=request.POST['description'],
-            CEO=request.POST['CEO'],
-            issueType=request.POST['issueType'],
-            sector=request.POST['sector'],
-        )
+        symbol = request.POST['symbol']
+        if symbol is None:
+            raise HTTPBadRequest()
 
-        try:
-            request.dbsession.add(instance)
-        except DBAPIError:
-            return Response(DB_ERR_MSG, content_type='text/plain', status=500)
+        response = requests.get(API_URL + '/stock/{}/company'.format(symbol))
+        data = response.json()
+        query = request.dbsession.query(Stock)
+        e = Stock(**data)
+        if query.filter(Stock.symbol == data['symbol']).first() is None:
+            request.dbsession.add(e)
+
+        else:
+            request.dbsession.query(Stock).update(e)
 
         return HTTPFound(location=request.route_url('portfolio'))
 
