@@ -1,7 +1,8 @@
 from pyramid.response import Response
 from pyramid.view import view_config
-from pyramid.httpexceptions import HTTPFound, HTTPNotFound, HTTPBadRequest
+from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 from ..models import Stock
+from ..models import Junction
 import requests
 from . import DB_ERR_MSG
 from sqlalchemy.exc import DBAPIError
@@ -22,23 +23,39 @@ def get_stock_view(request):
             data = response.json()
             return {'company': data}
         except ValueError:
-            raise HTTPNotFound()
+            return HTTPNotFound()
 
     if request.method == 'POST':
 
-        symbol = request.POST['symbol']
-        if symbol is None:
-            raise HTTPBadRequest()
+        instance = Stock(
+            symbol=request.POST['symbol'],
+            companyName=request.POST['company'],
+            exchange=request.POST['exchange'],
+            industry=request.POST['industry'],
+            website=request.POST['website'],
+            description=request.POST['description'],
+            CEO=request.POST['CEO'],
+            issueType=request.POST['issueType'],
+            sector=request.POST['sector'],
+        )
 
-        response = requests.get(API_URL + '/stock/{}/company'.format(symbol))
-        data = response.json()
-        query = request.dbsession.query(Stock)
-        e = Stock(**data)
-        if query.filter(Stock.symbol == data['symbol']).first() is None:
-            request.dbsession.add(e)
+        junction = Junction(
+            account_id=request.authenticated_userid,
+            stock_id=instance.symbol
+        )
 
-        else:
-            request.dbsession.query(Stock).update(e)
+        try:
+            stock_query = request.dbsession.query(Stock)
+            if stock_query.filter(Stock.symbol == instance.symbol).first() is None:
+                request.dbsession.add(instance)
+
+            if stock_query.filter(instance.symbol == Junction.stock_id, junction.account_id == Junction.account_id).first() is None:
+                request.dbsession.add(junction)
+            else:
+                return{'message': 'You already have that in your portfolio.'}
+
+        except DBAPIError:
+            return Response(DB_ERR_MSG, content_type='text/plain', status=500)
 
         return HTTPFound(location=request.route_url('portfolio'))
 
@@ -48,12 +65,12 @@ def get_portfolio_view(request):
     """Load portfolio from database and display it."""
     try:
         query = request.dbsession.query(Stock)
-        all_entries = query.all()
+        user_stocks = query.filter(Junction.account_id == request.authenticated_userid, Junction.stock_id == Stock.symbol)
 
     except DBAPIError:
-        return DBAPIError(DB_ERR_MSG, content_type='text/plain', status=500)
+        raise DBAPIError(DB_ERR_MSG, content_type='text/plain', status=500)
 
-    return{'stocks': all_entries}
+    return{'stocks': user_stocks}
 
 
 @view_config(route_name='detail', renderer='../templates/stock-detail.jinja2')
@@ -62,12 +79,16 @@ def get_detail_view(request):
     try:
         symbol = request.matchdict['symbol']
     except KeyError:
-        return HTTPNotFound()
+        raise HTTPNotFound()
 
     try:
         query = request.dbsession.query(Stock)
-        stock_detail = query.filter(Stock.symbol == symbol).first()
+        stock_detail = query.filter(Junction.account_id == request.authenticated_userid).filter(Stock.symbol == symbol).one_or_none()
+
     except DBAPIError:
-        return KeyError('That stock symbol is not in the database.')
+        raise KeyError('That stock symbol is not in the database.')
+
+    if stock_detail is None:
+        raise HTTPNotFound()
 
     return {'stock': stock_detail}

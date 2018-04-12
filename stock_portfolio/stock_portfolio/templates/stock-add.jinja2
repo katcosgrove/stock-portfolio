@@ -18,7 +18,16 @@
         <p>Issue Type: {{company.issueType}}</p>
         <p>Sector: {{company.sector}}</p>
     </div>
-    <button name="symbol" value="{{company.symbol}}" type="submit">Add to Portfolio</button>
+    <input type="hidden" name="company" value="{{company.companyName}}">
+    <input type="hidden" name="symbol" value="{{company.symbol}}">
+    <input type="hidden" name="exchange" value="{{company.exchange}}">
+    <input type="hidden" name="industry" value="{{company.industry}}">
+    <input type="hidden" name="website" value="{{company.website}}">
+    <input type="hidden" name="description" value="{{company.description}}">
+    <input type="hidden" name="CEO" value="{{company.CEO}}">
+    <input type="hidden" name="issueType" value="{{company.issueType}}">
+    <input type="hidden" name="sector" value="{{company.sector}}">
+    <button name="submit" type="submit">Add to Portfolio</button>
 </form>
     {% endif %}
     {% if message %}

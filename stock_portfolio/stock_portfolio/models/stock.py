@@ -3,8 +3,9 @@ from sqlalchemy import (
     Column,
     Integer,
     String,
+    ForeignKey,
 )
-
+from sqlalchemy.orm import relationship
 
 from .meta import Base
 
@@ -21,6 +22,10 @@ class Stock(Base):
     industry = Column(String)
     sector = Column(String)
     issueType = Column(String)
+
+    accounts = relationship(
+        'Account',
+        secondary='user_portfolios')
 
 
 Index('entry_index', Stock.id, unique=True, mysql_length=255)
