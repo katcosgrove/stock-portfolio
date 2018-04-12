@@ -56,5 +56,6 @@ def get_auth_view(request):
 
 @view_config(route_name='logout')
 def logout(request):
+    """Log out of current account."""
     headers = forget(request)
     return HTTPFound(location=request.route_url('home'), headers=headers)

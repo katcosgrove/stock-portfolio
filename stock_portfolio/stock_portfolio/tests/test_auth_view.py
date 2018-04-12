@@ -28,6 +28,15 @@ def test_auth_signup_view(dummy_request):
 #     assert isinstance(response, HTTPFound)
 
 
+def test_logout_default(dummy_request):
+    """Test logout method returns HTTPFound"""
+    from ..views.auth import logout
+    from pyramid.httpexceptions import HTTPFound
+
+    response = logout(dummy_request)
+    assert isinstance(response, HTTPFound)
+
+
 def test_bad_request_auth_signup_view(dummy_request):
     """Test bad signup."""
     from ..views.auth import get_auth_view

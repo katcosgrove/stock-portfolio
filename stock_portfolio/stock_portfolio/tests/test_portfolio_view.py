@@ -63,7 +63,6 @@ def test_valid_post_to_stock_view(dummy_request):
     }
 
     response = get_stock_view(dummy_request)
-    assert response.status_code == 302
     assert isinstance(response, HTTPFound)
 
 
@@ -102,15 +101,7 @@ def test_invalid_post_to_stock_view(dummy_request):
     from pyramid.httpexceptions import HTTPBadRequest
 
     dummy_request.method = 'POST'
-    dummy_request.POST = {
-        'exchange': 'Nasdaq Global Select',
-        'industry': 'Computer Hardware',
-        'website': 'http://www.cray.com',
-        'description': 'Cray Inc designs, develops',
-        'CEO': 'Peter J. Ungaro',
-        'issueType': 'cs',
-        'sector': 'Technology'
-    }
+    dummy_request.POST = {'symbol': None}
 
     with pytest.raises(HTTPBadRequest):
         response = get_stock_view(dummy_request)
