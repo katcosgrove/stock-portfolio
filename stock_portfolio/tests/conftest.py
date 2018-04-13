@@ -1,5 +1,6 @@
 # import os
 import pytest
+import unittest
 from pyramid import testing
 from ..models.meta import Base
 from ..models import Stock
