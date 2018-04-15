@@ -12,6 +12,9 @@ from . import DB_ERR_MSG
     renderer='../templates/auth.jinja2',
     permission=NO_PERMISSION_REQUIRED)
 def get_auth_view(request):
+    if request.authenticated_userid:
+        return HTTPFound(location=request.route_url('portfolio'))
+
     if request.method == 'POST':
         try:
             username = request.POST['username']
@@ -28,8 +31,13 @@ def get_auth_view(request):
                 password=password,
             )
 
-            headers = remember(request, userid=instance.username)
-            request.dbsession.add(instance)
+            query = request.dbsession.query(Account)
+            if query.filter(Account.username == username).first() is None:
+                headers = remember(request, userid=instance.username)
+                request.dbsession.add(instance)
+
+            else:
+                return {'message': 'That username is already in use.'}
 
             return HTTPFound(location=request.route_url('portfolio'), headers=headers)
 

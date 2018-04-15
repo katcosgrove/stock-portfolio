@@ -1,6 +1,9 @@
 {% extends "base.jinja2" %}
 {% block content %}
     <h2>Register</h2>
+    {% if message %}
+    <p>{{message}}</p>
+    {% endif %}
     <form id="registration-form" method="POST" action="{{request.route_url('auth')}}">
       <input type="hidden" name="csrf_token" value="{{request.session.get_csrf_token()}}">
       <input class="username" name="username" type="text" placeholder="Username" required>
