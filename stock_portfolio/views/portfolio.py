@@ -23,7 +23,7 @@ def get_stock_view(request):
             data = response.json()
             return {'company': data}
         except ValueError:
-            return HTTPNotFound()
+            return {'message': 'That stock symbol does not exist.'}
 
     if request.method == 'POST':
 
