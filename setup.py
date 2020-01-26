@@ -9,9 +9,9 @@ with open(os.path.join(here, 'CHANGES.txt')) as f:
     CHANGES = f.read()
 
 requires = [
-    'cryptacular',
     'plaster_pastedeploy',
     'psycopg2-binary',
+    'cryptacular >= 1.4.1',
     'pyramid >= 1.9a',
     'pyramid_debugtoolbar',
     'pyramid_jinja2',
@@ -32,7 +32,7 @@ tests_require = [
 
 setup(
     name='stock_portfolio',
-    version='0.0',
+    version='0.4',
     description='stock_portfolio',
     long_description=README + '\n\n' + CHANGES,
     classifiers=[
